@@ -54,7 +54,7 @@ class Engine3D:
         projectedX = int(self.width / 2 + ((x * self.distance) / (z + self.distance)) * self.scale)
         return (projectedX, projectedY)
 
-    def __clear(self):
+    def clear(self):
         for triangle in self.shapes:
             self.image.delete(triangle)
 
@@ -66,24 +66,3 @@ class Engine3D:
             
         for triangle in self.triangles:
             self.__createTriangle((coords[triangle[0]], coords[triangle[1]], coords[triangle[2]]))
-
-    ### Simple Rotation Animation ###
-    def animation(self):
-        self.__clear()
-        test.rotateY(0.0005)
-        test.rotateZ(0.0005)
-        self.render()
-        self.window.after(25, self.animation)
-
-### Example Use ###
-
-points = [(-1,-1,-1),(-1,-1,1),(-1,1,1),(-1,1,-1),(1,-1,-1),(1,-1,1),(1,1,1),(1,1,-1)]
-triangles = [(0,1,2),(0,2,3), (2,3,7),(2,7,6), (1,2,5),(2,5,6), (0,1,4),(1,4,5), (4,5,6),(4,6,7), (3,7,4),(4,3,0)]
-
-test = Engine3D(points, triangles)
-test.animation()
-
-###################
-
-
-
