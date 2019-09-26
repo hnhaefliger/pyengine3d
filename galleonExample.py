@@ -1,4 +1,4 @@
-### Shark ###
+### Galleon ###
 
 import graphics
 
@@ -24,8 +24,6 @@ with open('GalleonT.txt', 'r') as f:
 
 test = graphics.Engine3D(points, triangles, distance=100)
 
-test.render()
-
 def animation():
     test.clear()
     test.rotateY(0.0005)
@@ -34,4 +32,4 @@ def animation():
 
 animation()
 
-##############
+################
