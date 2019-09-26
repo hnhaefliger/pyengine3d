@@ -73,7 +73,7 @@ class Engine3D:
         test.rotateY(0.0005)
         test.rotateZ(0.0005)
         self.render()
-        self.window.after(25, animation)
+        self.window.after(25, self.animation)
 
 ### Example Use ###
 
