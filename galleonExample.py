@@ -26,9 +26,9 @@ test = graphics.Engine3D(points, triangles, distance=100)
 
 def animation():
     test.clear()
-    test.rotateY(0.0005)
+    test.rotateY(0.1)
     test.render('gray')
-    test.window.after(25, animation)
+    test.window.after(1, animation)
 
 animation()
 

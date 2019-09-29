@@ -9,11 +9,10 @@ test = graphics.Engine3D(points, triangles)
 
 def animation():
     test.clear()
-    test.rotateX(0.0005)
-    test.rotateY(0.0005)
-    test.rotateZ(0.0005)
+    test.rotateX(0.1)
+    test.rotateY(0.1)
     test.render(color = 'gray')
-    test.window.after(50, animation)
+    test.window.after(20, animation)
 
 animation()
 
