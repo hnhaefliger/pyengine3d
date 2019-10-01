@@ -1,6 +1,6 @@
 ### Galleon ###
 
-import graphics
+import graphics.engine
 
 points = []
 triangles = []
@@ -22,13 +22,13 @@ with open('coords/GalleonT.txt', 'r') as f:
         triangles.append(newCoords)
     f.close()
 
-test = graphics.Engine3D(points, triangles, distance=100)
+test = graphics.engine.Engine3D(points, triangles, distance=100)
 
 def animation():
     test.clear()
-    test.rotateY(0.1)
+    test.rotate('y', 0.1)
     test.render('gray')
-    test.window.after(1, animation)
+    test.screen.after(1, animation)
 
 animation()
 
