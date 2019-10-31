@@ -3,23 +3,31 @@ import graphics.face
 import graphics.vertex
 
 class Engine3D:
-    def __init__(self, points, triangles, width=1000, height=700, distance=6, scale=100):
+    def writePoints(self, points):
+        self.points = []
+        for point in points:
+            self.points.append(graphics.vertex.Vertex(point))
+            
+    def writeTriangles(self, triangles):
+        self.triangles = []
+        for triangle in triangles:
+            if len(triangle) != 4:
+                triangle.append('gray')
+            self.triangles.append(graphics.face.Face(triangle))
+            
+    def __init__(self, points, triangles, width=1000, height=700, distance=6, scale=100, title='3D', background='white'):
         #object parameters
         self.distance = distance
         self.scale = scale
 
         #initialize display
-        self.screen = graphics.screen.Screen(width, height)
+        self.screen = graphics.screen.Screen(width, height, title, background)
 
         #store coordinates
-        self.points = []
-        for point in points:
-            self.points.append(graphics.vertex.Vertex(point))
+        self.writePoints(points)
 
         #store faces
-        self.triangles = []
-        for triangle in triangles:
-            self.triangles.append(graphics.face.Face(triangle))
+        self.writeTriangles(triangles)
 
     def clear(self):
         #clear display
@@ -30,7 +38,7 @@ class Engine3D:
         for point in self.points:
             point.rotate(axis, angle)
 
-    def render(self, color='white'):
+    def render(self):
         #calculate flattened coordinates (x, y)
         points = []
         for point in self.points:
@@ -40,11 +48,11 @@ class Engine3D:
         triangles = []
         for triangle in self.triangles:
             avgZ = -(self.points[triangle.a].z + self.points[triangle.b].z + self.points[triangle.c].z) / 3
-            triangles.append((points[triangle.a], points[triangle.b], points[triangle.c], avgZ))
+            triangles.append((points[triangle.a], points[triangle.b], points[triangle.c], triangle.color, avgZ))
 
         #sort triangles from furthest back to closest
-        triangles = sorted(triangles,key=lambda x: x[3])
+        triangles = sorted(triangles,key=lambda x: x[4])
 
         #draw triangles
         for triangle in triangles:
-            self.screen.createTriangle(triangle, color)
+            self.screen.createTriangle(triangle[0:3], triangle[3])

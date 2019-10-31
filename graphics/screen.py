@@ -1,14 +1,14 @@
 import tkinter
 
 class Screen:
-    def __init__(self, width, height):
+    def __init__(self, width, height, title, background):
         #calculate center of screen
         self.zeros = [int(width/2), int(height/2)]
 
         #initialize tkinter window for displaying graphics
         self.window = tkinter.Tk()
-        self.window.title('3D')
-        self.image = tkinter.Canvas(self.window, width=width, height=height, bg='White')
+        self.window.title(title)
+        self.image = tkinter.Canvas(self.window, width=width, height=height, bg=background)
         self.image.pack()
     
     def createTriangle(self, points, color):
