@@ -3,6 +3,17 @@ import graphics.face
 import graphics.vertex
 
 class Engine3D:
+    def __resetDrag(self, event):
+        self.__prev = []
+    
+    def __drag(self, event):
+        if self.__prev:
+            self.rotate('y', (event.x - self.__prev[0]) / 20)
+            self.rotate('x', (event.y - self.__prev[1]) / 20)
+            self.clear()
+            self.render()
+        self.__prev = [event.x, event.y]
+        
     def writePoints(self, points):
         self.points = []
         for point in points:
@@ -22,7 +33,10 @@ class Engine3D:
 
         #initialize display
         self.screen = graphics.screen.Screen(width, height, title, background)
-
+        self.screen.window.bind('<B1-Motion>', self.__drag)
+        self.__prev = []
+        self.screen.window.bind('<ButtonRelease-1>', self.__resetDrag)
+        
         #store coordinates
         self.writePoints(points)
 
