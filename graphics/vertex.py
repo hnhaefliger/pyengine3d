@@ -34,8 +34,18 @@ class Vertex:
             newZ = self.z * math.cos(angle) + self.x * math.sin(angle)
             newY = self.y
         else:
-            raise ValueError('not a valid axis')
+            raise ValueError('invalid rotation axis')
         self.x = newX
         self.y = newY
         self.z = newZ
+
+    def move(self, axis, value):
+        if axis == 'x':
+            self.x += value
+        elif axis == 'y':
+            self.y += value
+        elif axis == 'z':
+            self.z += value
+        else:
+            raise ValueError('Invalid movement axis')
 
