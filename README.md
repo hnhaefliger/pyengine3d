@@ -10,7 +10,20 @@ The main module can be found in the "graphics" directory, the other files are de
 
 The first step is to create an Engine object which requires a set of points and a set of triangles linking them together.
 
+```Python
+test = Engine3D([[1, 1, 1], [0, 0, 0], [2, 2, 2]], [[0, 1, 2]]) # this will create a single triangle between these points
+test = Engine3D([[1, 1, 1], [0, 0, 0], [2, 2, 2]], [[0, 1, 2, "green"]]) # you can also change the color of the triangle (the default is green)
+```
+
 From your code, you can modify the display using the writePoints, writeTriangles, rotate, clear and render methods.
+
+```Python
+test.writePoints([[3, 3, 3], 0, 0, 0], [2, 2, 2]]) # change the points
+test.writeTriangles([[2, 1, 0, "blue"]]) # the order of the points does not matter
+test.rotate("y", 45) # rotate the object 45 degrees around the y axis
+test.clear() # clear the display
+test.render() # update the image
+```
 
 You can also use the following keys to interact with the display.
 
@@ -27,4 +40,4 @@ The module now also allows you to move points on the model (this is still a work
 
 ---
 
-If you would like to help me improve this project
+If you would like to help me improve this project, you can contact me at code@henryhaefliger.com
