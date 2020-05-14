@@ -18,7 +18,7 @@ test = Engine3D([[1, 1, 1], [0, 0, 0], [2, 2, 2]], [[0, 1, 2, "green"]]) # you c
 From your code, you can modify the display using the writePoints, writeTriangles, rotate, clear and render methods.
 
 ```Python
-test.writePoints([[3, 3, 3], 0, 0, 0], [2, 2, 2]]) # change the points
+test.writePoints([[3, 3, 3], [0, 0, 0], [2, 2, 2]]) # change the points
 test.writeTriangles([[2, 1, 0, "blue"]]) # the order of the points does not matter
 test.rotate("y", 45) # rotate the object 45 degrees around the y axis
 test.clear() # clear the display
