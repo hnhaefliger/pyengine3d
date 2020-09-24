@@ -28,8 +28,8 @@ test.render() # update the image
 You can also use the following keys to interact with the display.
 
 1. Left mouse button + Drag -> Rotate the view
-2. Up arrow -> Zoom in
-3. Down arrow -> Zoom out
+2. "." -> Zoom in
+3. "," -> Zoom out
 4. w, a, s, d -> Move the view up, left, down or right
 
 The module now also allows you to move points on the model (this is still a work in progress)
