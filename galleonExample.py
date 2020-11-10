@@ -31,5 +31,6 @@ def animation():
     test.screen.after(1, animation)
 
 animation()
+test.screen.window.mainloop()
 
 ################
