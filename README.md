@@ -1,6 +1,6 @@
 # PyEngine3D
 
-The code in this section is that explained in my medium.com post https://medium.com/quick-code/3d-graphics-using-the-python-standard-library-99914447760c
+The code in this branch is that explained in my medium.com post https://medium.com/quick-code/3d-graphics-using-the-python-standard-library-99914447760c
 
 ---
 
