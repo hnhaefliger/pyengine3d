@@ -4,7 +4,7 @@ Example of a simple landscape         |  Example of a mountain landscape
 :-------------------------:|:-------------------------:
 ![](images/landscape1.png?raw=true)  |  ![](images/landscape2.png?raw=true )
 
-The code in this branch is that explained in my medium.com post <https://medium.com/quick-code/3d-graphics-using-the-python-standard-library-99914447760c>
+The code here is explained in my medium.com post <https://medium.com/quick-code/3d-graphics-using-the-python-standard-library-99914447760c>
 
 ---
 
