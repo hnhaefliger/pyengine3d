@@ -6,7 +6,7 @@ import copy
 class Engine3D:
     def __resetDrag(self, event):
         self.__prev = []
-    
+
     def __drag(self, event):
         if self.__prev:
             self.rotate('y', (event.x - self.__prev[0]) / 20)
@@ -18,7 +18,7 @@ class Engine3D:
     def __select(self, event):
         zeros = self.screen.zeros
         event = (event.x - zeros[0], event.y - zeros[1])
-            
+
         possibilities = []
         for a in range(-6, 5):
             for b in range(-6, 5):
@@ -31,14 +31,14 @@ class Engine3D:
 
             i = self.points[self.__selected]
             self.__axis = [[copy.deepcopy(i) for a in range(2)] for b in range(3)]
-            
+
             self.__axis[0][0].x -= 40 / self.scale
             self.__axis[0][1].x += 40 / self.scale
             self.__axis[1][0].y -= 40 / self.scale
             self.__axis[1][1].y += 40 / self.scale
             self.__axis[2][0].z -= 40 / self.scale
             self.__axis[2][1].z += 40 / self.scale
-            
+
             self.__axis = [[point.flatten(self.scale, self.distance) for point in i] for i in self.__axis]
             self.__axis = [[[i[0] + zeros[0], i[1] + zeros[1]] for i in j] for j in self.__axis]
             self.__axis = [self.screen.createLine(self.__axis[0], 'red'), self.screen.createLine(self.__axis[1], 'green'), self.screen.createLine(self.__axis[2], 'blue')]
@@ -99,20 +99,49 @@ class Engine3D:
         self.screen.zeros[1] += 5
         self.clear()
         self.render()
-        
+
+    def __next_fold(self, event):
+        if self.fold_index < len(self.folds):
+            for i in range(self.anim_steps):
+                self.screen.after(int(1000/self.anim_steps), self.__fold_animate(self.folds[self.fold_index]))
+            self.fold_index += 1
+
+    def __prev_fold(self, event):
+        if self.fold_index > 0:
+            for i in range(self.anim_steps):
+                self.screen.after(int(1000/self.anim_steps), self.__fold_animate(self.folds[self.fold_index-1],False))
+            self.fold_index -= 1
+
+    def __fold_animate(self, folds, do=True):
+        for subfolds in folds:
+            angle, axe1, axe2, points = subfolds
+            if do == True:
+                angle = angle / self.anim_steps
+            else:
+                angle = -angle / self.anim_steps
+            self.part_free_rotate(angle, axe1, axe2, points)
+        self.clear()
+        self.render()
+        self.screen.window.update_idletasks()
+
     def writePoints(self, points):
         self.points = []
         for point in points:
             self.points.append(graphics.vertex.Vertex(point))
-            
+
     def writeTriangles(self, triangles):
         self.triangles = []
         for triangle in triangles:
             if len(triangle) != 4:
                 triangle.append('gray')
             self.triangles.append(graphics.face.Face(triangle))
-            
-    def __init__(self, points, triangles, width=1000, height=700, distance=6, scale=100, title='3D', background='white'):
+
+    def __init__(self, points, triangles, folds=[], width=1000, height=700, distance=6, scale=100, title='3D', background='white'):
+        # folding animation parameters
+        self.anim_steps = 20
+        self.fold_index = 0
+        self.folds = folds
+
         #object parameters
         self.distance = distance
         self.scale = scale
@@ -129,6 +158,8 @@ class Engine3D:
         self.screen.window.bind('s', self.__cameradown)
         self.screen.window.bind('a', self.__cameraleft)
         self.screen.window.bind('d', self.__cameraright)
+        self.screen.window.bind('n', self.__next_fold)
+        self.screen.window.bind('p', self.__prev_fold)
 
         # this is for editing the model
         self.__selected = None
@@ -141,11 +172,10 @@ class Engine3D:
         self.screen.window.bind('z', self.__selectz)
         self.screen.window.bind('<Left>', self.__movedown)
         self.screen.window.bind('<Right>', self.__moveup)
-        
+
         #store coordinates
         self.writePoints(points)
         self.flattened = []
-
         #store faces
         self.writeTriangles(triangles)
 
@@ -158,6 +188,16 @@ class Engine3D:
         for point in self.points:
             point.rotate(axis, angle)
 
+    def part_free_rotate(self, angle, A, B, points):
+        #rotate part of model around free vector (from self.points[A] to self.points[B])
+        for point in [self.points[index] for index in points]:
+            point.free_rotate(angle, self.points[A], self.points[B])
+
+    def free_rotate(self, angle, A, B):
+        #rotate model around free vector (from self.points[A] to self.points[B])
+        for point in self.points:
+            point.free_rotate(angle, self.points[A], self.points[B])
+
     def render(self):
         #calculate flattened coordinates (x, y)
         self.flattened = []
@@ -167,12 +207,16 @@ class Engine3D:
         #get coordinates to draw triangles
         triangles = []
         for triangle in self.triangles:
-            avgZ = -(self.points[triangle.a].z + self.points[triangle.b].z + self.points[triangle.c].z) / 3
-            triangles.append((self.flattened[triangle.a], self.flattened[triangle.b], self.flattened[triangle.c], triangle.color, avgZ))
+            avgZ = (self.points[triangle.a].z + self.points[triangle.b].z + self.points[triangle.c].z) #/ 3
+            triangles.append((self.flattened[triangle.a],
+                              self.flattened[triangle.b],
+                              self.flattened[triangle.c], triangle.color, avgZ))
 
         #sort triangles from furthest back to closest
         triangles = sorted(triangles,key=lambda x: x[4])
 
         #draw triangles
-        for triangle in triangles:
+        for triangle in triangles[::-1]:
             self.screen.createTriangle(triangle[0:3], triangle[3])
+
+
