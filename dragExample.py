@@ -1,29 +1,13 @@
-### Shark ###
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+"""2 coordinates axes rotations with mouse."""
 
-import graphics.engine
+from graphics.engine import read_data_file, Engine3D
 
-points = []
-triangles = []
+vertices = read_data_file('coords/SharkV.txt', 'V')
+polygons = read_data_file('coords/SharkP.txt', 'P')
+test = Engine3D(vertices, polygons, scale=100, title='Shark')
 
-with open('coords/SharkV.txt', 'r') as f:
-    lines = f.readlines()
-    for line in lines:
-        coords = line[:-2].split(' ')
-        points.append([float(coords[0]), float(coords[1]), float(coords[2])])
-    f.close()
-
-with open('coords/SharkT.txt', 'r') as f:
-    lines = f.readlines()
-    for line in lines:
-        coords = line[:-2].split(' ')
-        newCoords = []
-        for coord in coords[1:4]:
-            newCoords.append(int(coord))
-        triangles.append(newCoords)
-    f.close()
-
-test = graphics.engine.Engine3D(points, triangles, scale=100, title='Shark')
-test.render()
-test.screen.window.mainloop()
-
-##############
+if __name__ == '__main__':
+    test.render()
+    test.screen.window.mainloop()

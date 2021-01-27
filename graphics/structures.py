@@ -1,5 +1,17 @@
 import math
 
+
+class Polygon:
+    def __init__(self, *args):
+        #store point indexes
+        if isinstance(args[-1], str):
+            self.vertices = args[:-1]
+            self.color = args[-1]
+        else:
+            self.vertices = args
+            self.color = "grey"
+
+
 class Vertex:
     def __init__(self, point):
         #store x, y, z coordinates
@@ -10,9 +22,11 @@ class Vertex:
 
     def flatten(self, scale, distance):
         #calculate 2D coordinates from 3D point
-        projectedY = int(((self.y * distance) / (self.z + distance)) * scale)
-        projectedX = int(((self.x * distance) / (self.z + distance)) * scale)
-        return (projectedX, projectedY)
+        self.flat_x = int(((self.x * distance) / (self.z + distance)) * scale)
+        self.flat_y = int(((self.y * distance) / (self.z + distance)) * scale)
+
+    def get_flat(self):
+        return (self.flat_x, self.flat_y)
 
     def rotate(self, axis, angle):
         #rotate point around axis
