@@ -23,12 +23,25 @@ test = Engine3D([[1, 1, 1], [0, 0, 0], [2, 2, 2]], [[0, 1, 2]]) # this will crea
 test = Engine3D([[1, 1, 1], [0, 0, 0], [2, 2, 2]], [[0, 1, 2, "green"]]) # you can also change the color of the triangle (the default is green)
 ```
 
-From your code, you can modify the display using the writePoints, writeTriangles, rotate, clear and render methods.
+You can also define a list of folds that would be used to animate a multi-step folding.
+Each folding step is itself composed of simultaneously done line folds.
+Each line fold is defined by it's angle in degreee, two vertices that defines an oriented axe and a list of concerned vertices.
+
+```Python
+vertices = [[-1, -1, 1], [-1, 1, 0], [1, -1, .5], [-1, -1, -.5]]
+faces = [[0, 1, 2, "green"], [1, 2, 3, "red"]]
+folds = [[(45, 1, 2, [3])]]
+test = Engine3D(vertices, faces, folds)
+```
+
+From your code, you can modify the display using the writePoints, writeTriangles, rotate, free_rotate, part_free_rotate, clear and render methods.
 
 ```Python
 test.writePoints([[3, 3, 3], [0, 0, 0], [2, 2, 2]]) # change the points
 test.writeTriangles([[2, 1, 0, "blue"]]) # the order of the points does not matter
 test.rotate("y", 45) # rotate the object 45 degrees around the y axis
+test.free_rotate(45, 1, 2) # rotate the object 45 degrees around vertices[1]vertices[2] axis
+test.part_free_rotate(45, 1, 2, [3, 4]) # rotate vertices[3] and vertices[4] 45 degrees around (vertices[1],vertices[2]) axis
 test.clear() # clear the display
 test.render() # update the image
 ```
@@ -39,6 +52,7 @@ You can also use the following keys to interact with the display.
 2. Up arrow -> Zoom in
 3. Down arrow -> Zoom out
 4. w, a, s, d -> Move the view up, left, down or right
+5. n, p -> Animate the next or previous fold
 
 The module now also allows you to move points on the model (this is still a work in progress)
 
@@ -48,4 +62,5 @@ The module now also allows you to move points on the model (this is still a work
 
 ---
 
-If you would like to help me improve this project, you can contact me at code@henryhaefliger.com
+Initial code: code@henryhaefliger.com
+Folding and free rotation axis code: miq75@free.fr
